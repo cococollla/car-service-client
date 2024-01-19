@@ -24,29 +24,6 @@ class ApiServices {
       console.error("Authentication error:", error);
     }
   }
-
-  static async registration(newUser: User) {
-    try {
-      const response = await fetch(
-        "https://localhost:7227/api/Account/Signup",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        }
-      );
-      if (response.status === 200) {
-        return redirect("/auth");
-      } else {
-        alert("Registration failed");
-      }
-    } catch (error) {
-      alert(error);
-    }
-  }
 }
 
 export default ApiServices;
