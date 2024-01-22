@@ -41,7 +41,11 @@ const RegistrationForm = () => {
           <input
             {...register("userName")}
             type="text"
-            className={styles.auth__input}
+            className={
+              errors.userName?.message
+                ? `${styles.auth__input}`
+                : `${styles.auth__input__error}`
+            }
           ></input>
           <div className={styles.error}>{errors.userName?.message}</div>
         </div>

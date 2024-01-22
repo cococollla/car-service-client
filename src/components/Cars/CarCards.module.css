@@ -1,0 +1,42 @@
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.cardContent {
+  margin-bottom: 10px;
+}
+
+.brand {
+  font-weight: bold;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editButton,
+.deleteButton {
+  padding: 8px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  margin-left: 5px;
+}

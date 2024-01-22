@@ -25,7 +25,7 @@ const AuthForm = () => {
       password: data.userPassword,
     };
     try {
-      await ApiServices.auth(user);
+      await ApiServices.auth(user, () => navigate("/cars"));
       reset();
     } catch (error) {
       console.error("Auth error", error);
@@ -46,22 +46,27 @@ const AuthForm = () => {
             <input
               {...register("userEmail")}
               type="text"
-              className={styles.auth__input}
+              className={
+                errors.userEmail?.message
+                  ? `${styles.auth__input__error}`
+                  : `${styles.auth__input}`
+              }
               required
             />
-            <div className={styles.error}>{errors.userEmail?.message}</div>
           </div>
           <div className={styles.input__container}>
-            {" "}
             <label htmlFor="userPassword">Password</label>
             <br />
             <input
               {...register("userPassword")}
               type="password"
-              className={styles.auth__input}
+              className={
+                errors.userPassword?.message
+                  ? `${styles.auth__input__error}`
+                  : `${styles.auth__input}`
+              }
               required
             />
-            <div className={styles.error}>{errors.userPassword?.message}</div>
           </div>
         </div>
         <div className={styles.button__container}>

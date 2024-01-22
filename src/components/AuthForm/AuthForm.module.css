@@ -25,10 +25,16 @@ body {
   margin-bottom: 15px;
 }
 
+.auth__input__error {
+  outline: 2px solid #ec1d1d;
+  background-color: rgba(236, 29, 29, 10%);
+}
+
 .error {
   color: #ec1d1d;
 }
 
+.auth__input__error,
 .auth__input,
 .button__submit,
 .button__secondary {
