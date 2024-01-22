@@ -1,21 +1,21 @@
 import { redirect } from "react-router-dom";
 import User from "../interfaces/User";
+import axios from "axios";
 
 class ApiServices {
   static async auth(user: User) {
     try {
-      const response = await fetch("https://localhost:7227/api/Account/Login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      if (response.status === 404) {
-        alert("Authentication failed");
-      }
-      const data = await response.json();
+      const response = await axios.post(
+        "https://localhost:7227/api/Account/Login",
+        user,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.data;
       localStorage.setItem("userId", data.value.userId);
       localStorage.setItem("role", data.value.role);
       localStorage.setItem("accessToken", data.value.accessToken);
@@ -25,21 +25,20 @@ class ApiServices {
     }
   }
 
-  static async registration(newUser: User) {
+  static async registration(newUser: User, callback?: () => void) {
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "https://localhost:7227/api/Account/Signup",
+        newUser,
         {
-          method: "POST",
-          credentials: "include",
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newUser),
         }
       );
       if (response.status === 200) {
-        return redirect("/auth");
+        callback?.();
       } else {
         alert("Registration failed");
       }

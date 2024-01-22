@@ -1,23 +1,35 @@
-import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import User from "../../interfaces/User";
 import ApiServices from "../../services/ApiServices";
 import styles from "./AuthForm.module.css";
-import { useNavigate } from "react-router-dom";
+import { userAuthShema } from "../../validations/UserValidation";
 
 const AuthForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(userAuthShema),
+  });
 
-  const handleAuthUser = () => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     const user: User = {
       id: 0,
       name: null,
-      email: email,
-      password: password,
+      email: data.userEmail,
+      password: data.userPassword,
     };
-
-    ApiServices.auth(user);
+    try {
+      await ApiServices.auth(user);
+      reset();
+    } catch (error) {
+      console.error("Auth error", error);
+    }
   };
 
   const routToRegistration = () => {
@@ -26,50 +38,45 @@ const AuthForm = () => {
 
   return (
     <div className={styles.auth__form}>
-      <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="userEmail">Email</label>
-          <br />
-          <input
-            id="userEmail"
-            name="userEmail"
-            type="text"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
-            className={styles.auth__input}
-          />
+          <div className={styles.input__container}>
+            <label htmlFor="userEmail">Email</label>
+            <br />
+            <input
+              {...register("userEmail")}
+              type="text"
+              className={styles.auth__input}
+              required
+            />
+            <div className={styles.error}>{errors.userEmail?.message}</div>
+          </div>
+          <div className={styles.input__container}>
+            {" "}
+            <label htmlFor="userPassword">Password</label>
+            <br />
+            <input
+              {...register("userPassword")}
+              type="password"
+              className={styles.auth__input}
+              required
+            />
+            <div className={styles.error}>{errors.userPassword?.message}</div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="userPassword">Password</label>
-          <br />
-          <input
-            id="userPassword"
-            name="userPassword"
-            type="password"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
-            className={styles.auth__input}
-          />
+        <div className={styles.button__container}>
+          <button type="submit" className={styles.button__submit}>
+            Log in
+          </button>
+          <button
+            type="button"
+            className={styles.button__secondary}
+            onClick={() => routToRegistration()}
+          >
+            Registration
+          </button>
         </div>
-      </div>
-      <div className={styles.button__container}>
-        <button
-          type="submit"
-          className={styles.button__submit}
-          onClick={() => handleAuthUser()}
-        >
-          Log in
-        </button>
-        <button
-          type="button"
-          className={styles.button__secondary}
-          onClick={() => routToRegistration()}
-        >
-          Registration
-        </button>
-      </div>
+      </form>
     </div>
   );
 };

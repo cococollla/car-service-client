@@ -1,70 +1,76 @@
-import { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import User from "../../interfaces/User";
 import styles from "../AuthForm/AuthForm.module.css";
 import ApiServices from "../../services/ApiServices";
+import { useNavigate } from "react-router-dom";
+import { userRegistrationSheme } from "../../validations/UserValidation";
 
 const RegistrationForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(userRegistrationSheme),
+  });
 
-  const handleRegistrationUser = () => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     const newUser: User = {
       id: 0,
-      name: name,
-      email: email,
-      password: password,
+      name: data.userName,
+      email: data.userEmail,
+      password: data.userPassword,
     };
-
-    ApiServices.registration(newUser);
+    try {
+      ApiServices.registration(newUser, () => navigate("/auth"));
+      reset();
+    } catch (error) {
+      console.error("Registration error", error);
+    }
   };
 
   return (
     <div className={styles.auth__form}>
-      <div>
-        <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.input__container}>
           <label htmlFor="userName">Name</label>
           <br />
           <input
-            id="userName"
-            name="userName"
+            {...register("userName")}
             type="text"
-            onChange={(e) => setName(e.target.value)}
             className={styles.auth__input}
           ></input>
+          <div className={styles.error}>{errors.userName?.message}</div>
         </div>
-        <div>
+        <div className={styles.input__container}>
           <label htmlFor="userEmail">Email</label>
           <br />
           <input
-            id="userEmail"
-            name="userEmail"
+            {...register("userEmail")}
             type="text"
-            onChange={(e) => setEmail(e.target.value)}
             className={styles.auth__input}
           ></input>
+          <div className={styles.error}>{errors.userEmail?.message}</div>
         </div>
-        <div>
+        <div className={styles.input__container}>
           <label htmlFor="userPassword">Password</label>
           <br />
           <input
-            id="userPassword"
-            name="userPassword"
-            type="text"
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("userPassword")}
+            type="password"
             className={styles.auth__input}
           ></input>
+          <div className={styles.error}>{errors.userPassword?.message}</div>
         </div>
         <div className={styles.button__container}>
-          <button
-            type="submit"
-            className={styles.button__submit}
-            onClick={() => handleRegistrationUser()}
-          >
+          <button type="submit" className={styles.button__submit}>
             Sign up
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
