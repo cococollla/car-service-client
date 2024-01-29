@@ -1,6 +1,5 @@
-import User from "../interfaces/User";
-import axios, { Axios, AxiosResponse } from "axios";
-import Car from "../interfaces/Car";
+import { User, userData } from "../interfaces/User";
+import axios from "axios";
 
 class ApiServices {
   static async auth(user: User, callback?: () => void) {
@@ -25,7 +24,7 @@ class ApiServices {
     }
   }
 
-  static async registration(newUser: User, callback?: () => void) {
+  static async registration(newUser: userData, callback?: () => void) {
     try {
       const response = await axios.post(
         "https://localhost:7227/api/Account/Signup",

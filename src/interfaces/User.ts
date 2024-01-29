@@ -1,8 +1,8 @@
-interface User {
+export interface User {
   id: number;
   name: string | null;
   email: string;
   password: string;
 }
 
-export default User;
+export type userData = Pick<User, "name" | "email" | "password">;

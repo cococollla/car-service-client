@@ -1,0 +1,13 @@
+.cards_container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 50px 50px;
+}
+
+.cars_page {
+  height: 100vh;
+  background-color: var(--background-modal-color);
+  display: flex;
+  justify-content: center;
+  box-shadow: inset 0px 0px 12px 2px #c1c1c191;
+}

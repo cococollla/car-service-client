@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setCars, selectCars } from "../../store/carSlice";
+import { setCars, selectCars } from "../../store/СarSlice";
 import Car from "../../interfaces/Car";
-import styles from "./CarCards.module.css";
+import styles from "./Cars.module.css";
+import Card from "../../components/Card/Card";
 
 const CarsCards = () => {
   const dispatch = useDispatch();
@@ -32,20 +33,12 @@ const CarsCards = () => {
   }, [dispatch]);
 
   return (
-    <div className={styles.cardsContainer}>
-      {cars.map((car) => (
-        <div key={car.id} className={styles.card}>
-          <div className={styles.cardContent}>
-            <div className={styles.brand}>{car.brandName}</div>
-            <div className={styles.description}>{car.shortDescription}</div>
-            <div className={styles.price}>{car.price}</div>
-          </div>
-          <div className={styles.cardActions}>
-            <button className={styles.editButton}>Edit</button>
-            <button className={styles.deleteButton}>Delete</button>
-          </div>
-        </div>
-      ))}
+    <div className={styles.cars_page}>
+      <div className={styles.cards_container}>
+        {cars.map((car) => (
+          <Card car={car} />
+        ))}
+      </div>
     </div>
   );
 };
