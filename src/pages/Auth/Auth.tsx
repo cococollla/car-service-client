@@ -77,6 +77,7 @@ const AuthForm = () => {
               buttonText="Registration"
               buttonType="secondary"
               type="button"
+              onClick={() => routToRegistration()}
             />
           </div>
         </form>
