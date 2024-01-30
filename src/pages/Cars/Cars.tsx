@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setCars, selectCars, setPaginationInfo } from "../../store/СarSlice";
+import { setCars, selectCars } from "../../store/СarSlice";
 import Car from "../../interfaces/Car";
 import styles from "./Cars.module.css";
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
+import Pagination from "../../components/Pagination/Pagination";
 
 const CarsCards = () => {
   const dispatch = useDispatch();
-  const { cars, page, pageSize, totalItems } = useSelector(selectCars);
+  const { cars, page, pageSize } = useSelector(selectCars);
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -33,39 +34,19 @@ const CarsCards = () => {
     fetchCars();
   }, [dispatch, page, pageSize]);
 
-  const totalPages = Math.ceil(totalItems / pageSize);
-
   return (
     <>
       <Header />
       <div className={styles.cars_page}>
         <div className={styles.cards_container}>
           {cars.map((car) => (
-            <div key={car.id} className={styles.car_card}>
+            <div key={car.id}>
               <Card car={car} />
             </div>
           ))}
         </div>
-        <div className={styles.pagination}>
-          <button
-            disabled={page === 1}
-            onClick={() =>
-              dispatch(setPaginationInfo({ page: page - 1, pageSize }))
-            }
-          >
-            Previous
-          </button>
-          <span>{`Page ${page} of ${totalPages}`}</span>
-          <button
-            disabled={page === totalPages}
-            onClick={() =>
-              dispatch(setPaginationInfo({ page: page + 1, pageSize }))
-            }
-          >
-            Next
-          </button>
-        </div>
       </div>
+      <Pagination />
     </>
   );
 };
