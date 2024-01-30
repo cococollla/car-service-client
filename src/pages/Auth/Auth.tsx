@@ -5,6 +5,7 @@ import { User } from "../../interfaces/User";
 import ApiServices from "../../services/ApiServices";
 import styles from "./Auth.module.css";
 import { userAuthShema } from "../../validations/UserValidation";
+import Button from "../../UiKit/Button/Button";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -71,16 +72,12 @@ const AuthForm = () => {
             </div>
           </div>
           <div className={styles.button__container}>
-            <button type="submit" className={styles.button__submit}>
-              Log in
-            </button>
-            <button
+            <Button buttonText="Log in" buttonType="primary" type="submit" />
+            <Button
+              buttonText="Registration"
+              buttonType="secondary"
               type="button"
-              className={styles.button__secondary}
-              onClick={() => routToRegistration()}
-            >
-              Registration
-            </button>
+            />
           </div>
         </form>
       </div>

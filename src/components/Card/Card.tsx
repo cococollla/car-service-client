@@ -7,15 +7,19 @@ const Card: FC<CardProps> = ({ car }) => {
     <>
       <div key={car.id} className={styles.card}>
         <div className={styles.card_contentt}>
-          <div>{car.brandName}</div>
-          <div>
+          <div className={styles.img_container}>
             <img src="images/nissan.jpg" />
+          </div>
+          <div className={styles.description}>
+            <div>
+              {car.brandName} {car.yearRelese}
+            </div>
+            <div>{car.price}</div>
           </div>
         </div>
 
         <div className={styles.card_actions}>
-          <button className={styles.edit_button}>Edit</button>
-          <button className={styles.delete_button}>Delete</button>
+          <button className={styles.edit_button}>Select</button>
         </div>
       </div>
     </>

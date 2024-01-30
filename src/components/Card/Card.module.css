@@ -8,6 +8,19 @@
   background-color: var(--background-modal-color);
 }
 
+.card:hover {
+  box-shadow: 0px 0px 20px 5px #868686;
+}
+
+.card img {
+  transition: transform 1s ease;
+  display: block;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
 .card_content {
   margin-bottom: 10px;
 }
@@ -17,27 +30,48 @@
 }
 
 .card_actions {
+  margin: 10px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.edit_button {
+  font-family: var(--main--font);
+  font-size: 20px;
+  font-weight: 300;
+  cursor: pointer;
+  background-color: #ffff;
+  color: #0b0404;
+  width: 100%;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.edit_button:hover {
+  transform: scale(1.1);
+  font-weight: 600;
+}
+
+.description {
   display: flex;
   justify-content: space-between;
-}
-
-.edit_button,
-.delete_button {
-  padding: 8px;
-  cursor: pointer;
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-}
-
-.delete_button {
-  background-color: #f44336;
-  margin-left: 5px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
 }
 
 img {
   height: 400px;
   width: 400px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+.img_container {
+  display: inline-block;
+  overflow: hidden;
+  max-height: 400px;
+  max-width: 400px;
+}
+
+.card_actions {
+  overflow: hidden;
 }

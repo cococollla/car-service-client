@@ -1,0 +1,41 @@
+.button__primary,
+.button__secondary {
+  font-family: var(--main--font);
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button__primary,
+.button__secondary {
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth__input:hover,
+.auth__input:focus,
+.auth__input:active {
+  outline: 2px solid var(--brimary-color);
+}
+
+.button__primary {
+  background-color: var(--brimary-color);
+  color: var(--background-modal-color);
+  margin-right: 10px;
+}
+
+.button__secondary {
+  border: 1px solid var(--brimary-color);
+  border-radius: 4px;
+  color: var(--brimary-color);
+  background-color: var(--background-modal-color);
+}
+
+.button__primary:hover {
+  background-color: #2980b9;
+}
+
+.button__secondary:hover {
+  background-color: var(--brimary-color);
+  color: var(--background-modal-color);
+}

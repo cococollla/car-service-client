@@ -5,6 +5,7 @@ import styles from "../Auth/Auth.module.css";
 import ApiServices from "../../services/ApiServices";
 import { useNavigate } from "react-router-dom";
 import { userRegistrationSheme } from "../../validations/UserValidation";
+import Button from "../../UiKit/Button/Button";
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -78,9 +79,7 @@ const RegistrationForm = () => {
             <div className={styles.error}>{errors.userPassword?.message}</div>
           </div>
           <div className={styles.button__container}>
-            <button type="submit" className={styles.button__submit}>
-              Sign up
-            </button>
+            <Button buttonText="Sign up" buttonType="primary" type="submit" />
           </div>
         </form>
       </div>

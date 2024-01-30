@@ -5,6 +5,7 @@ import { setCars, selectCars } from "../../store/СarSlice";
 import Car from "../../interfaces/Car";
 import styles from "./Cars.module.css";
 import Card from "../../components/Card/Card";
+import Header from "../../components/Header/Header";
 
 const CarsCards = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,18 @@ const CarsCards = () => {
   }, [dispatch]);
 
   return (
-    <div className={styles.cars_page}>
-      <div className={styles.cards_container}>
-        {cars.map((car) => (
-          <Card car={car} />
-        ))}
+    <>
+      <Header />
+      <div className={styles.cars_page}>
+        <div className={styles.cards_container}>
+          {cars.map((car) => (
+            <div className={styles.car_card}>
+              <Card car={car} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
