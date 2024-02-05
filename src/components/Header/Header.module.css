@@ -1,6 +1,5 @@
 .header {
   background-color: var(--background-modal-color);
-  color: #ffffff;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -10,4 +9,32 @@
   max-height: 100px;
   font-family: var(--main--font);
   border-bottom: 1px solid #ccc;
+}
+
+.item_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.item_group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  list-style-type: none;
+}
+
+.item_group li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
 }

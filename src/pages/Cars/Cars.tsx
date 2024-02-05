@@ -40,9 +40,7 @@ const CarsCards = () => {
       <div className={styles.cars_page}>
         <div className={styles.cards_container}>
           {cars.map((car) => (
-            <div key={car.id}>
-              <Card car={car} />
-            </div>
+            <Card car={car} key={car.id} />
           ))}
         </div>
       </div>

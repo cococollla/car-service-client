@@ -12,7 +12,7 @@ interface CarsState {
 const initialState: CarsState = {
   cars: [],
   page: 1,
-  pageSize: 10,
+  pageSize: 8,
   totalItems: 0,
 };
 

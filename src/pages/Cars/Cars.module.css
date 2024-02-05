@@ -1,16 +1,12 @@
-.cars_page {
-  font-family: var(--main--font);
-  font-size: 20px;
-  background-color: var(--background-modal-color);
-  display: flex;
-  box-shadow: inset 0px 0px 12px 2px #c1c1c191;
+.cards_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin: 50px 20px;
 }
 
-.cards_container {
-  display: flex;
-  justify-content: center;
-  align-content: flex-start;
-  flex-flow: row wrap;
-  gap: 25px;
-  margin: 50px 50px;
+.card {
+  max-width: 100%;
+  max-height: 470px;
+  font-size: 25px;
 }
