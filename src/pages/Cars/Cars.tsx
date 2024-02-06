@@ -7,6 +7,7 @@ import styles from "./Cars.module.css";
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import Pagination from "../../components/Pagination/Pagination";
+import ApiCarService from "../../services/ApiCarService";
 
 const Cars = () => {
   const dispatch = useDispatch();
@@ -15,17 +16,9 @@ const Cars = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get<{ cars: Car[]; totalItems: number }>(
-          `http://localhost:7227/api/Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await ApiCarService.getCarsByPage(page, pageSize);
 
-        dispatch(setCars(response.data));
+        dispatch(setCars(response));
       } catch (error) {
         console.error("Error fetching cars:", error);
       }

@@ -1,20 +1,13 @@
+import ApiBaseService from "./ApiBaseService";
 import { User, userData } from "../interfaces/User";
-import axios from "axios";
 
-class ApiServices {
+class ApiUserService extends ApiBaseService {
   static async auth(user: User, callback?: () => void) {
     try {
-      const response = await axios.post(
-        "http://localhost:7227/api/Account/Login",
-        user,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.data;
+      const response = await ApiUserService.post("Account/Login", user);
+      const data = response.data as {
+        value: { userId: string; role: string; accessToken: string };
+      };
       localStorage.setItem("userId", data.value.userId);
       localStorage.setItem("role", data.value.role);
       localStorage.setItem("accessToken", data.value.accessToken);
@@ -26,16 +19,7 @@ class ApiServices {
 
   static async registration(newUser: userData, callback?: () => void) {
     try {
-      const response = await axios.post(
-        "http://localhost:7227/api/Account/Signup",
-        newUser,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await ApiUserService.post("Account/Signup", newUser);
       if (response.status === 200) {
         callback?.();
       } else {
@@ -47,4 +31,4 @@ class ApiServices {
   }
 }
 
-export default ApiServices;
+export default ApiUserService;

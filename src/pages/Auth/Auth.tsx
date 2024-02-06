@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { User } from "../../interfaces/User";
-import ApiServices from "../../services/ApiServices";
+import ApiServices from "../../services/ApiUserService";
 import styles from "./Auth.module.css";
 import { userAuthShema } from "../../validations/UserValidation";
 import Button from "../../UiKit/Button/Button";

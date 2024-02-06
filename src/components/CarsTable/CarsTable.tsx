@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Car from "../../interfaces/Car";
 import { Button, Modal, Table } from "antd";
-import ApiCarService from "../../services/ApiCar";
+import ApiCarService from "../../services/ApiCarService";
 
 const CarsTable = () => {
   const [cars, setCars] = useState<Car[]>([]);
@@ -28,6 +28,11 @@ const CarsTable = () => {
       title: "Short Description",
       dataIndex: "shortDescription",
       key: "shortDescription",
+    },
+    {
+      title: "Year of release",
+      dataIndex: "yearRelese",
+      key: "yearRelese",
     },
     {
       title: "Price",
@@ -95,6 +100,7 @@ const CarsTable = () => {
         onOk={confirmDelete}
         onCancel={() => setSelectedCarId(null)}
         confirmLoading={loading}
+        centered
       >
         <p>Are you sure you want to delete this car?</p>
       </Modal>
