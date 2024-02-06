@@ -11,6 +11,10 @@
   border-bottom: 1px solid #ccc;
 }
 
+.title_text {
+  font-weight: bold;
+}
+
 .item_row {
   display: flex;
   flex-direction: row;

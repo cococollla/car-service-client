@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
+import CustomLink from "../../UiKit/CustomLink/CustomLink";
 
 const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.item_row}>
         <img src="/images/logo.png" className={styles.logo} />
-        <div>Car service</div>
-        <Link to="/cars">Cars list</Link>
-        <Link to="/carsTable">Cars table</Link>
+        <b className={styles.title_text}>Car service</b>
+        <CustomLink to="/cars" value="Car list" />
+        <CustomLink to="/carsTable" value="Cars table" />
       </div>
       <ul className={styles.item_group}>
         <li>

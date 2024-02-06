@@ -45,6 +45,16 @@ class ApiCarService extends ApiBaseService {
       throw error;
     }
   }
+
+  static async updateCar(updateCar: Car, callback?: () => void) {
+    try {
+      await ApiCarService.update("Car/UpdateCar", updateCar);
+      callback?.();
+    } catch (error) {
+      console.error(`Failed to update car with ID ${updateCar.id}`, error);
+      throw error;
+    }
+  }
 }
 
 export default ApiCarService;

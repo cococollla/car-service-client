@@ -34,6 +34,18 @@ class ApiBaseService {
       },
     });
   }
+
+  protected static update<T>(
+    endpoint: string,
+    object: T
+  ): Promise<AxiosResponse<T>> {
+    return axios.put<T>(`${ApiBaseService.baseUrl}/${endpoint}`, object, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }
 
 export default ApiBaseService;

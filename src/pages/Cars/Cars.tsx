@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { setCars, selectCars } from "../../store/СarSlice";
-import Car from "../../interfaces/Car";
 import styles from "./Cars.module.css";
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";

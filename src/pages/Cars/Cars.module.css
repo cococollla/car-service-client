@@ -1,9 +1,11 @@
 .cars_page {
   font-family: var(--main--font);
+  height: 100vh;
   font-size: 20px;
   background-color: var(--background-modal-color);
   display: flex;
   justify-content: center;
+  align-items: center;
   box-shadow: inset 0px 0px 12px 2px #c1c1c191;
 }
 
@@ -11,5 +13,4 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
-  margin: 50px 50px;
 }

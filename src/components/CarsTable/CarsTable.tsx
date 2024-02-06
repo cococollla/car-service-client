@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import Car from "../../interfaces/Car";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal, Space, Table } from "antd";
 import ApiCarService from "../../services/ApiCarService";
+import CarForm from "../CarUpdateForm/CarUpdateForm";
 
 const CarsTable = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns = [
     {
@@ -43,12 +46,44 @@ const CarsTable = () => {
       title: "Action",
       key: "action",
       render: (record: Car) => (
-        <Button type="link" onClick={() => handleDelete(record.id)}>
-          Delete
-        </Button>
+        <Space>
+          <Button type="link" onClick={() => handleDelete(record.id)}>
+            Delete
+          </Button>
+          <Button type="link" onClick={() => handleUpdate(record)}>
+            Update
+          </Button>
+        </Space>
       ),
     },
   ];
+
+  const handleUpdate = (car: Car) => {
+    setSelectedCar(car);
+    setIsModalVisible(true);
+  };
+
+  const handleSave = async (updatedCar: Car) => {
+    try {
+      setLoading(true);
+      await ApiCarService.updateCar(updatedCar, () => {
+        Modal.success({
+          content: "Car updated successfully",
+        });
+        setIsModalVisible(false);
+      });
+    } catch (error) {
+      Modal.error({
+        content: `Failed to update car: ${error}`,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const handleDelete = (carId: number) => {
     setSelectedCarId(carId);
@@ -62,10 +97,12 @@ const CarsTable = () => {
       await fetchCars();
       Modal.success({
         content: "Car deleted successfully",
+        centered: true,
       });
     } catch (error) {
       Modal.error({
         content: `Failed to delete car: ${error}`,
+        centered: true,
       });
     } finally {
       setLoading(false);
@@ -93,6 +130,7 @@ const CarsTable = () => {
         columns={columns}
         loading={loading}
         rowKey={(record) => record.id.toString()}
+        style={{ fontFamily: "Roboto", fontSize: 20 }}
       />
       <Modal
         title="Confirm Delete"
@@ -103,6 +141,20 @@ const CarsTable = () => {
         centered
       >
         <p>Are you sure you want to delete this car?</p>
+      </Modal>
+
+      <Modal
+        title="Update Car"
+        open={isModalVisible}
+        onCancel={handleCancel}
+        confirmLoading={loading}
+        centered
+      >
+        <CarForm
+          car={selectedCar}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
       </Modal>
     </div>
   );
