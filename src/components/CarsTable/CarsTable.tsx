@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Car from "../../interfaces/Car";
-import { Button, Modal, Space, Table } from "antd";
+import { Button, Form, FormInstance, Modal, Space, Table } from "antd";
 import ApiCarService from "../../services/ApiCarService";
 import CarForm from "../CarUpdateForm/CarUpdateForm";
 
@@ -10,6 +10,7 @@ const CarsTable = () => {
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const formRef = useRef<FormInstance<any>>(Form.useForm()[0]);
 
   const columns = [
     {
@@ -147,6 +148,7 @@ const CarsTable = () => {
         title="Update Car"
         open={isModalVisible}
         onCancel={handleCancel}
+        onOk={() => formRef.current!.submit()}
         confirmLoading={loading}
         centered
       >
@@ -154,6 +156,7 @@ const CarsTable = () => {
           car={selectedCar}
           onSave={handleSave}
           onCancel={handleCancel}
+          formRef={formRef}
         />
       </Modal>
     </div>

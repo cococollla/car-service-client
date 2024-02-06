@@ -1,9 +1,9 @@
 import { FC, useEffect } from "react";
 import CarFormProps from "./CarUpdateForm.props";
 import Car from "../../interfaces/Car";
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 
-const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel }) => {
+const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -13,8 +13,17 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel }) => {
   }, [car, form]);
 
   const onFinish = (values: Car) => {
+    if (!values.id && car) {
+      values.id = car.id;
+    }
     onSave(values);
   };
+
+  useEffect(() => {
+    if (formRef) {
+      formRef.current = form;
+    }
+  }, [form, formRef]);
 
   return (
     <Form form={form} onFinish={onFinish}>
@@ -44,12 +53,6 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel }) => {
       </Form.Item>
       <Form.Item label="Price" name="price" rules={[{ required: true }]}>
         <Input />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Save
-        </Button>
-        <Button onClick={onCancel}>Cancel</Button>
       </Form.Item>
     </Form>
   );
