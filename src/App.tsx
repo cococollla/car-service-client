@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
 import AuthForm from "./pages/Auth/Auth";
-import RegistrationForm from "./pages/RegistrationPage/Registration";
-import CarsCards from "./pages/Cars/Cars";
+import RegistrationForm from "./pages/Registration/Registration";
+import Cars from "./pages/Cars/Cars";
+import CarsTablePage from "./pages/CatsTablePage/CarsTablePage";
 
 function App() {
   return (
@@ -11,7 +11,8 @@ function App() {
         <Route path="*" element={<Navigate to="/auth" replace={true} />} />
         <Route path="/auth" element={<AuthForm />} />
         <Route path="/registration" element={<RegistrationForm />} />
-        <Route path="/cars" element={<CarsCards />} />
+        <Route path="/cars" element={<Cars />} />
+        <Route path="/carsTable" element={<CarsTablePage />} />
       </Routes>
     </div>
   );

@@ -5,7 +5,7 @@ class ApiServices {
   static async auth(user: User, callback?: () => void) {
     try {
       const response = await axios.post(
-        "https://localhost:7227/api/Account/Login",
+        "http://localhost:7227/api/Account/Login",
         user,
         {
           withCredentials: true,
@@ -27,7 +27,7 @@ class ApiServices {
   static async registration(newUser: userData, callback?: () => void) {
     try {
       const response = await axios.post(
-        "https://localhost:7227/api/Account/Signup",
+        "http://localhost:7227/api/Account/Signup",
         newUser,
         {
           withCredentials: true,

@@ -8,7 +8,7 @@ import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import Pagination from "../../components/Pagination/Pagination";
 
-const CarsCards = () => {
+const Cars = () => {
   const dispatch = useDispatch();
   const { cars, page, pageSize } = useSelector(selectCars);
 
@@ -16,7 +16,7 @@ const CarsCards = () => {
     const fetchCars = async () => {
       try {
         const response = await axios.get<{ cars: Car[]; totalItems: number }>(
-          `https://localhost:7227/api/Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`,
+          `http://localhost:7227/api/Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`,
           {
             withCredentials: true,
             headers: {
@@ -49,4 +49,4 @@ const CarsCards = () => {
   );
 };
 
-export default CarsCards;
+export default Cars;
