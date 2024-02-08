@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import Car from "../../interfaces/Car";
+import { CarDto, Car } from "../../interfaces/Car";
 import { Button, Form, FormInstance, Modal, Space, Table } from "antd";
 import ApiCarService from "../../services/ApiCarService";
 import CarForm from "../CarUpdateForm/CarUpdateForm";
+import { useDispatch } from "react-redux";
+import { setColors, setBrands } from "../../store/СarSlice";
 
 const CarsTable = () => {
   const [cars, setCars] = useState<Car[]>([]);
@@ -11,6 +13,26 @@ const CarsTable = () => {
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const formRef = useRef<FormInstance<any>>(Form.useForm()[0]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [colorsResponse, brandsResponse] = await Promise.all([
+          ApiCarService.getColors(),
+          ApiCarService.getBrands(),
+        ]);
+
+        dispatch(setColors({ colors: colorsResponse }));
+        dispatch(setBrands({ brands: brandsResponse }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const columns = [
     {
@@ -64,7 +86,7 @@ const CarsTable = () => {
     setIsModalVisible(true);
   };
 
-  const handleSave = async (updatedCar: Car) => {
+  const handleSave = async (updatedCar: CarDto) => {
     try {
       setLoading(true);
       await ApiCarService.updateCar(updatedCar, () => {

@@ -1,5 +1,5 @@
 import ApiBaseService from "./ApiBaseService";
-import Car from "../interfaces/Car";
+import { Brand, Car, CarDto, Color } from "../interfaces/Car";
 
 class ApiCarService extends ApiBaseService {
   static async deleteCarById(id: number | null) {
@@ -46,12 +46,32 @@ class ApiCarService extends ApiBaseService {
     }
   }
 
-  static async updateCar(updateCar: Car, callback?: () => void) {
+  static async updateCar(updateCar: CarDto, callback?: () => void) {
     try {
       await ApiCarService.update("Car/UpdateCar", updateCar);
       callback?.();
     } catch (error) {
       console.error(`Failed to update car with ID ${updateCar.id}`, error);
+      throw error;
+    }
+  }
+
+  static async getColors(): Promise<Color[]> {
+    try {
+      const response = await ApiCarService.get<Color[]>("Car/GetColors");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching cars:", error);
+      throw error;
+    }
+  }
+
+  static async getBrands(): Promise<Brand[]> {
+    try {
+      const response = await ApiCarService.get<Brand[]>("Car/GetBrands");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching cars:", error);
       throw error;
     }
   }
