@@ -2,7 +2,7 @@
 export interface Car {
   id: number;
   brandName: string;
-  color: string;
+  colorName: string;
   price: number;
   yearRelese: string;
   shortDescription: string;

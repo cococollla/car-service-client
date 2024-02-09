@@ -12,9 +12,20 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
 
   useEffect(() => {
     if (car) {
-      form.setFieldsValue(car);
+      const initialBrandId = brands.find(
+        (brand) => brand.name === car.brandName
+      )?.id;
+      const initialColorId = colors.find(
+        (color) => color.name === car.colorName
+      )?.id;
+
+      form.setFieldsValue({
+        ...car,
+        brandId: initialBrandId,
+        colorId: initialColorId,
+      });
     }
-  }, [car, form]);
+  }, [car, brands, colors, form]);
 
   const onFinish = (values: CarDto) => {
     if (!values.id && car) {
@@ -33,19 +44,25 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
     <Form form={form} onFinish={onFinish}>
       <Form.Item
         label="Brand Name"
-        name="brandName"
+        name="brandId"
         rules={[{ required: true, message: "Please select a brand" }]}
       >
-        <Select options={brands}></Select>
+        <Select placeholder="Select a color">
+          {brands.map((brand) => (
+            <Option key={brand.id} value={brand.id}>
+              {brand.name}
+            </Option>
+          ))}
+        </Select>
       </Form.Item>
       <Form.Item
         label="Color"
-        name="colorName"
+        name="colorId"
         rules={[{ required: true, message: "Please select a color" }]}
       >
-        <Select options={colors} labelInValue placeholder="Select a color">
+        <Select placeholder="Select a color">
           {colors.map((color) => (
-            <Option key={color.id} value={color}>
+            <Option key={color.id} value={color.id}>
               {color.name}
             </Option>
           ))}
@@ -62,7 +79,7 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
       </Form.Item>
       <Form.Item
         label="Year of release"
-        name="yearRelease"
+        name="yearRelese"
         rules={[
           { required: true, message: "Please enter the year of release" },
         ]}
