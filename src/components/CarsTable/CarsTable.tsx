@@ -16,24 +16,6 @@ const CarsTable = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [colorsResponse, brandsResponse] = await Promise.all([
-          ApiCarService.getColors(),
-          ApiCarService.getBrands(),
-        ]);
-
-        dispatch(setColors({ colors: colorsResponse }));
-        dispatch(setBrands({ brands: brandsResponse }));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
   const columns = [
     {
       title: "ID",
@@ -81,6 +63,28 @@ const CarsTable = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [colorsResponse, brandsResponse] = await Promise.all([
+          ApiCarService.getColors(),
+          ApiCarService.getBrands(),
+        ]);
+
+        dispatch(setColors({ colors: colorsResponse }));
+        dispatch(setBrands({ brands: brandsResponse }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
+
   const handleUpdate = (car: Car) => {
     setSelectedCar(car);
     setIsModalVisible(true);
@@ -89,15 +93,18 @@ const CarsTable = () => {
   const handleSave = async (updatedCar: CarDto) => {
     try {
       setLoading(true);
-      await ApiCarService.updateCar(updatedCar, () => {
-        Modal.success({
-          content: "Car updated successfully",
-        });
-        setIsModalVisible(false);
+      await ApiCarService.updateCar(updatedCar);
+
+      await fetchCars();
+      Modal.success({
+        content: "Car updated successfully",
+        centered: true,
       });
+      setIsModalVisible(false);
     } catch (error) {
       Modal.error({
         content: `Failed to update car: ${error}`,
+        centered: true,
       });
     } finally {
       setLoading(false);
@@ -141,10 +148,6 @@ const CarsTable = () => {
       console.error("Error fetching cars:", error);
     }
   };
-
-  useEffect(() => {
-    fetchCars();
-  }, []);
 
   return (
     <div>

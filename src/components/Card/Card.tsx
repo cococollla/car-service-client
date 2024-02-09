@@ -10,7 +10,7 @@ const Card: FC<CardProps> = ({ car }) => {
       </div>
       <div className={styles.description}>
         <div>
-          {car.brandName} {car.yearRelese}
+          {car.id} {car.brandName}
         </div>
         <div>{car.price}</div>
       </div>

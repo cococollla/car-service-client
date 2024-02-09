@@ -1,14 +1,13 @@
 import { FC, useEffect } from "react";
 import CarFormProps from "./CarUpdateForm.props";
-import { CarDto, Color } from "../../interfaces/Car";
-import { Form, Input, Select } from "antd";
+import { CarDto } from "../../interfaces/Car";
+import { Form, Input, Select, SelectProps } from "antd";
 import { useSelector } from "react-redux";
 import { selectCars } from "../../store/СarSlice";
 
 const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
   const [form] = Form.useForm();
   const { brands, colors } = useSelector(selectCars);
-  const { Option } = Select;
 
   useEffect(() => {
     if (car) {
@@ -40,6 +39,20 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
     }
   }, [form, formRef]);
 
+  const selectForBrands: SelectProps["options"] = brands.map((brand) => {
+    return {
+      value: brand.id,
+      label: brand.name,
+    };
+  });
+
+  const selectForColors: SelectProps["options"] = colors.map((color) => {
+    return {
+      value: color.id,
+      label: color.name,
+    };
+  });
+
   return (
     <Form form={form} onFinish={onFinish}>
       <Form.Item
@@ -47,26 +60,14 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
         name="brandId"
         rules={[{ required: true, message: "Please select a brand" }]}
       >
-        <Select placeholder="Select a color">
-          {brands.map((brand) => (
-            <Option key={brand.id} value={brand.id}>
-              {brand.name}
-            </Option>
-          ))}
-        </Select>
+        <Select placeholder="Select a color" options={selectForBrands}></Select>
       </Form.Item>
       <Form.Item
         label="Color"
         name="colorId"
         rules={[{ required: true, message: "Please select a color" }]}
       >
-        <Select placeholder="Select a color">
-          {colors.map((color) => (
-            <Option key={color.id} value={color.id}>
-              {color.name}
-            </Option>
-          ))}
-        </Select>
+        <Select placeholder="Select a color" options={selectForColors}></Select>
       </Form.Item>
       <Form.Item
         label="Short Description"
