@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { User } from "../../interfaces/User";
+import { User, UserAuth } from "../../interfaces/User";
 import ApiServices from "../../services/ApiUserService";
 import styles from "./Auth.module.css";
 import { userAuthShema } from "../../validations/UserValidation";
 import Button from "../../UiKit/Button/Button";
+import { FC } from "react";
 
-const AuthForm = () => {
+interface AuthFormProps {
+  setIsAuth: (value: boolean) => void;
+}
+
+const AuthForm: FC<AuthFormProps> = ({ setIsAuth }) => {
   const navigate = useNavigate();
   const {
     register,
@@ -19,17 +24,16 @@ const AuthForm = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    const user: User = {
-      id: 0,
-      name: null,
+    const user: UserAuth = {
       email: data.userEmail,
       password: data.userPassword,
     };
     try {
       await ApiServices.auth(user, () => navigate("/cars"));
-      reset();
+      setIsAuth(true);
     } catch (error) {
       console.error("Auth error", error);
+      reset();
     }
   };
 
