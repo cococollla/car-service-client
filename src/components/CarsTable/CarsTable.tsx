@@ -1,17 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import { CarDto, Car } from "../../interfaces/Car";
+import { FC, useEffect, useRef, useState } from "react";
+import { CarUpdateDto, Car, CarCreateDto } from "../../interfaces/Car";
 import { Button, Form, FormInstance, Modal, Space, Table } from "antd";
 import ApiCarService from "../../services/ApiCarService";
-import CarForm from "../CarUpdateForm/CarUpdateForm";
+import CarForm from "../CarForms/CarUpdateForm/CarUpdateForm";
 import { useDispatch } from "react-redux";
 import { setColors, setBrands } from "../../store/СarSlice";
+import { CarsTableProps } from "./CarsTableProps";
+import CarCreateForm from "../CarForms/CarCreateForm/CarCreateForm";
 
-const CarsTable = () => {
+const CarsTable: FC<CarsTableProps> = ({
+  isCreateModalVisible,
+  onCreateModalClose,
+}) => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const formRef = useRef<FormInstance<any>>(Form.useForm()[0]);
 
   const dispatch = useDispatch();
@@ -55,7 +60,7 @@ const CarsTable = () => {
           <Button type="link" onClick={() => handleDelete(record.id)}>
             Delete
           </Button>
-          <Button type="link" onClick={() => handleUpdate(record)}>
+          <Button type="link" onClick={() => handleEdit(record)}>
             Update
           </Button>
         </Space>
@@ -85,12 +90,32 @@ const CarsTable = () => {
     fetchCars();
   }, []);
 
-  const handleUpdate = (car: Car) => {
-    setSelectedCar(car);
-    setIsModalVisible(true);
+  const confirmCreate = async (car: CarCreateDto) => {
+    try {
+      setLoading(true);
+      await ApiCarService.addCar(car);
+
+      await fetchCars();
+      Modal.success({
+        content: "Car create successfully",
+        centered: true,
+      });
+    } catch (error) {
+      Modal.error({
+        content: `Failed to create car: ${error}`,
+        centered: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSave = async (updatedCar: CarDto) => {
+  const handleEdit = (car: Car) => {
+    setSelectedCar(car);
+    setIsEditModalVisible(true);
+  };
+
+  const confirmEdit = async (updatedCar: CarUpdateDto) => {
     try {
       setLoading(true);
       await ApiCarService.updateCar(updatedCar);
@@ -100,7 +125,7 @@ const CarsTable = () => {
         content: "Car updated successfully",
         centered: true,
       });
-      setIsModalVisible(false);
+      setIsEditModalVisible(false);
     } catch (error) {
       Modal.error({
         content: `Failed to update car: ${error}`,
@@ -111,8 +136,8 @@ const CarsTable = () => {
     }
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handleEditModalClose = () => {
+    setIsEditModalVisible(false);
   };
 
   const handleDelete = (carId: number) => {
@@ -171,17 +196,25 @@ const CarsTable = () => {
 
       <Modal
         title="Update Car"
-        open={isModalVisible}
-        onCancel={handleCancel}
+        open={isEditModalVisible}
+        onCancel={handleEditModalClose}
         onOk={() => formRef.current!.submit()}
         confirmLoading={loading}
         centered
       >
-        <CarForm
-          car={selectedCar}
-          onSave={handleSave}
-          onCancel={handleCancel}
-          formRef={formRef}
+        <CarForm car={selectedCar} onSave={confirmEdit} formRef={formRef} />
+      </Modal>
+      <Modal
+        title="Add Car"
+        open={isCreateModalVisible}
+        onCancel={() => onCreateModalClose()}
+        confirmLoading={loading}
+        footer={false}
+        centered
+      >
+        <CarCreateForm
+          onSave={confirmCreate}
+          onCancel={() => onCreateModalClose()}
         />
       </Modal>
     </div>

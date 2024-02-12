@@ -21,8 +21,17 @@ export interface Brand {
 }
 
 //Модель для отправки данных обновления автомобиля на бэк
-export interface CarDto {
+export interface CarUpdateDto {
   id: number;
+  yearRelese: string;
+  price: number;
+  shortDescription: string;
+  colorId: number;
+  brandId: number;
+}
+
+//Модель для добавления автомобиля
+export interface CarCreateDto {
   yearRelese: string;
   price: number;
   shortDescription: string;

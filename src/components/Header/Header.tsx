@@ -1,7 +1,9 @@
 import styles from "./Header.module.css";
 import CustomLink from "../../UiKit/CustomLink/CustomLink";
+import { FC } from "react";
+import { HeaderProps } from "./Header.props";
 
-const Header = () => {
+const Header: FC<HeaderProps> = ({ activeModal }) => {
   return (
     <header className={styles.header}>
       <div className={styles.item_row}>
@@ -9,6 +11,7 @@ const Header = () => {
         <b className={styles.title_text}>Car service</b>
         <CustomLink to="/cars" value="Car list" />
         <CustomLink to="/carsTable" value="Cars table" />
+        <div className={styles.nav_link}>{activeModal}</div>
       </div>
       <ul className={styles.item_group}>
         <li>

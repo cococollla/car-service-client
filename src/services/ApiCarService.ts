@@ -1,5 +1,11 @@
 import ApiBaseService from "./ApiBaseService";
-import { Brand, Car, CarDto, Color } from "../interfaces/Car";
+import {
+  Brand,
+  Car,
+  CarCreateDto,
+  CarUpdateDto,
+  Color,
+} from "../interfaces/Car";
 
 class ApiCarService extends ApiBaseService {
   static async deleteCarById(id: number | null) {
@@ -46,12 +52,21 @@ class ApiCarService extends ApiBaseService {
     }
   }
 
-  static async updateCar(updateCar: CarDto, callback?: () => void) {
+  static async updateCar(updateCar: CarUpdateDto, callback?: () => void) {
     try {
       await ApiCarService.update("Car/UpdateCar", updateCar);
       callback?.();
     } catch (error) {
       console.error(`Failed to update car with ID ${updateCar.id}`, error);
+      throw error;
+    }
+  }
+
+  static async addCar(car: CarCreateDto) {
+    try {
+      await ApiCarService.post("Car/CreateCar", car);
+    } catch (error) {
+      console.error("Error added car");
       throw error;
     }
   }

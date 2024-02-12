@@ -42,3 +42,22 @@
   width: 80px;
   height: 80px;
 }
+
+.nav_link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav_link {
+  color: #1677ff;
+}
+
+.nav_link:hover {
+  color: #0e4a9f;
+  font-weight: bold;
+}
+
+.nav_link:focus {
+  color: #1368df;
+  font-weight: bold;
+}

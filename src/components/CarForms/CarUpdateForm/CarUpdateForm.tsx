@@ -1,11 +1,11 @@
 import { FC, useEffect } from "react";
 import CarFormProps from "./CarUpdateForm.props";
-import { CarDto } from "../../interfaces/Car";
+import { CarUpdateDto } from "../../../interfaces/Car";
 import { Form, Input, Select, SelectProps } from "antd";
 import { useSelector } from "react-redux";
-import { selectCars } from "../../store/СarSlice";
+import { selectCars } from "../../../store/СarSlice";
 
-const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
+const CarForm: FC<CarFormProps> = ({ car, onSave, formRef }) => {
   const [form] = Form.useForm();
   const { brands, colors } = useSelector(selectCars);
 
@@ -26,7 +26,7 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, onCancel, formRef }) => {
     }
   }, [car, brands, colors, form]);
 
-  const onFinish = (values: CarDto) => {
+  const onFinish = (values: CarUpdateDto) => {
     if (!values.id && car) {
       values.id = car.id;
     }

@@ -1,11 +1,10 @@
 import { MutableRefObject } from "react";
-import { Car, CarDto } from "../../interfaces/Car";
+import { Car, CarUpdateDto } from "../../../interfaces/Car";
 import { FormInstance } from "antd";
 
 interface CarFormProps {
   car?: Car | null;
-  onSave: (updatedCar: CarDto) => void;
-  onCancel: () => void;
+  onSave: (updatedCar: CarUpdateDto) => void;
   formRef: MutableRefObject<FormInstance<any>>;
 }
 
