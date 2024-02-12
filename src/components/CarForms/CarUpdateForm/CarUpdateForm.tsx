@@ -26,11 +26,11 @@ const CarForm: FC<CarFormProps> = ({ car, onSave, formRef }) => {
     }
   }, [car, brands, colors, form]);
 
-  const onFinish = (values: CarUpdateDto) => {
-    if (!values.id && car) {
-      values.id = car.id;
+  const onFinish = (value: CarUpdateDto) => {
+    if (!value.id && car) {
+      value.id = car.id;
     }
-    onSave(values);
+    onSave(value);
   };
 
   useEffect(() => {

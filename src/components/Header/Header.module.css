@@ -61,3 +61,11 @@
   color: #1368df;
   font-weight: bold;
 }
+
+.profile_group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
