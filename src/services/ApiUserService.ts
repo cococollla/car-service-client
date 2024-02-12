@@ -1,8 +1,8 @@
 import ApiBaseService from "./ApiBaseService";
-import { User, userData } from "../interfaces/User";
+import { User, UserAuth, userData } from "../interfaces/User";
 
 class ApiUserService extends ApiBaseService {
-  static async auth(user: User, callback?: () => void) {
+  static async auth(user: UserAuth, callback?: () => void) {
     try {
       const response = await ApiUserService.post("Account/Login", user);
       const data = response.data as {
