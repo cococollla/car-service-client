@@ -2,13 +2,42 @@ import styles from "./Header.module.css";
 import CustomLink from "../../UiKit/CustomLink/CustomLink";
 import { FC } from "react";
 import { HeaderProps } from "./Header.props";
-import { Dropdown, Menu, MenuProps } from "antd";
+import { Button, Dropdown, MenuProps } from "antd";
+import useAuth from "../../hooks/useAuth";
 
 const Header: FC<HeaderProps> = ({ activeModal }) => {
-  const items: MenuProps["items"] = [
-    { key: "1", label: <CustomLink to="/carsTable" value="Cars table" /> },
-    { key: "2", label: <CustomLink to="/usersTable" value="Users table" /> },
-  ];
+  const { logout, userRole } = useAuth();
+
+  const roleItemsDropdown = () => {
+    switch (userRole) {
+      case "User":
+        return [{ key: 1, label: <Button onClick={logout}>Logout</Button> }];
+      case "Manager":
+        return [
+          {
+            key: 1,
+            label: <CustomLink to="/carsTable" value="Cars table" />,
+          },
+          { key: 2, label: <Button onClick={logout}>Logout</Button> },
+        ];
+      case "Admin":
+        return [
+          {
+            key: 1,
+            label: <CustomLink to="/carsTable" value="Cars table" />,
+          },
+          {
+            key: 2,
+            label: <CustomLink to="/usersTable" value="Users table" />,
+          },
+          { key: 3, label: <Button onClick={logout}>Logout</Button> },
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const items: MenuProps["items"] = roleItemsDropdown();
 
   return (
     <header className={styles.header}>
@@ -28,7 +57,12 @@ const Header: FC<HeaderProps> = ({ activeModal }) => {
           <b>Favorite</b>
         </li>
         <li>
-          <Dropdown menu={{ items }} placement="bottomCenter" arrow={true}>
+          <Dropdown
+            menu={{ items }}
+            placement="bottom"
+            arrow={true}
+            trigger={["click"]}
+          >
             <a
               onClick={(e) => e.preventDefault()}
               className={styles.profile_group}

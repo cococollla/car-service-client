@@ -1,4 +1,4 @@
-import Car from "../../interfaces/Car";
+import { Car } from "../../interfaces/Car";
 
 interface CardProps {
   car: Car;

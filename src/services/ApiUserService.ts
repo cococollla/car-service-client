@@ -1,19 +1,23 @@
 import ApiBaseService from "./ApiBaseService";
-import { User, UserAuth, userData } from "../interfaces/User";
+import { ResponseAuth, User, UserAuth, userData } from "../interfaces/User";
+import axios, { AxiosResponse } from "axios";
+import { ErrorResponse } from "react-router-dom";
 
 class ApiUserService extends ApiBaseService {
-  static async auth(user: UserAuth, callback?: () => void) {
+  static async auth(
+    user: UserAuth,
+    callback?: () => void
+  ): Promise<ResponseAuth | undefined> {
     try {
-      const response = await ApiUserService.post("Account/Login", user);
-      const data = response.data as {
-        value: { userId: string; role: string; accessToken: string };
-      };
-      localStorage.setItem("userId", data.value.userId);
-      localStorage.setItem("role", data.value.role);
-      localStorage.setItem("accessToken", data.value.accessToken);
+      const response = await ApiUserService.post<ResponseAuth>(
+        "Account/Login",
+        user
+      );
       callback?.();
+      return response.data;
     } catch (error) {
       console.error("Authentication error:", error);
+      return undefined;
     }
   }
 
@@ -69,6 +73,21 @@ class ApiUserService extends ApiBaseService {
       await ApiUserService.update("User/UpdateUser", user);
     } catch (error) {
       console.error(`Failed to update user with ID ${user.id}`, error);
+      throw error;
+    }
+  }
+
+  static async logout() {
+    try {
+      await axios.get(`${ApiBaseService.baseUrl}/Account/Logout`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          userId: localStorage.getItem("userId"),
+        },
+      });
+    } catch (error) {
+      console.error("Failed to logout", error);
       throw error;
     }
   }

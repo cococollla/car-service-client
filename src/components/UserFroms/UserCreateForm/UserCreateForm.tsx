@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Button, Form, Input, Space } from "antd";
 import { UserCreateFormProps } from "./UserCreateForm.props";
 import { userData } from "../../../interfaces/User";
@@ -6,9 +6,10 @@ import { userData } from "../../../interfaces/User";
 const UserCreateForm: FC<UserCreateFormProps> = ({ onSave, onCancel }) => {
   const [form] = Form.useForm();
 
-  useEffect(() => () => {
+  const handleCancel = () => {
     form.resetFields();
-  });
+    onCancel();
+  };
 
   const onFinish = (value: userData) => {
     onSave(value);
@@ -63,7 +64,7 @@ const UserCreateForm: FC<UserCreateFormProps> = ({ onSave, onCancel }) => {
         <Button type="primary" htmlType="submit">
           Save
         </Button>
-        <Button onClick={() => onCancel()}>Close</Button>
+        <Button onClick={() => handleCancel()}>Close</Button>
       </Space>
     </Form>
   );

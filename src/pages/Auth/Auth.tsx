@@ -9,7 +9,7 @@ import Button from "../../UiKit/Button/Button";
 import { FC } from "react";
 
 interface AuthFormProps {
-  setIsAuth: (value: boolean) => void;
+  setIsAuth: (userId: string, userRole: string, accessToken: string) => void;
 }
 
 const AuthForm: FC<AuthFormProps> = ({ setIsAuth }) => {
@@ -29,8 +29,13 @@ const AuthForm: FC<AuthFormProps> = ({ setIsAuth }) => {
       password: data.userPassword,
     };
     try {
-      await ApiServices.auth(user, () => navigate("/cars"));
-      setIsAuth(true);
+      const response = await ApiServices.auth(user, () => navigate("/cars"));
+
+      if (response == undefined) {
+        throw new Error();
+      }
+
+      setIsAuth(response.userId, response.role, response.accessToken);
     } catch (error) {
       console.error("Auth error", error);
       reset();

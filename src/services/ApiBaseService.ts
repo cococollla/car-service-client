@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 class ApiBaseService {
-  private static baseUrl = "http://localhost:7227/api";
+  protected static baseUrl = "https://localhost:7227/api";
 
   protected static async get<T>(endpoint: string): Promise<AxiosResponse<T>> {
     return axios.get<T>(`${ApiBaseService.baseUrl}/${endpoint}`, {

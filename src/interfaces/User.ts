@@ -12,4 +12,10 @@ export interface UserAuth {
   password: string;
 }
 
+export interface ResponseAuth {
+  userId: string;
+  role: string;
+  accessToken: string;
+}
+
 export type userData = Pick<User, "name" | "email" | "password">;
