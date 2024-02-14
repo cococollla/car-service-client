@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem("isAuthenticated") === "true";
+  });
   const [userId, setUserId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -27,10 +29,8 @@ const useAuth = () => {
     }
   }, []);
 
-  const login = (userId: string, userRole: string, accessToken: string) => {
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("role", userRole);
-    localStorage.setItem("accessToken", accessToken);
+  const login = (userId: string, userRole: string) => {
+    localStorage.setItem("isAuthenticated", "true");
 
     setIsAuthenticated(true);
     setUserId(userId);
@@ -38,16 +38,11 @@ const useAuth = () => {
   };
 
   const logout = () => {
-    ApiUserService.logout();
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-    localStorage.removeItem("accessToken");
-
     setIsAuthenticated(false);
     setUserId(null);
     setUserRole(null);
 
-    navigate("/auth");
+    ApiUserService.logout(() => navigate("/auth"));
   };
 
   return {

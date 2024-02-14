@@ -6,6 +6,7 @@ import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import Pagination from "../../components/Pagination/Pagination";
 import ApiCarService from "../../services/ApiCarService";
+import { Modal } from "antd";
 
 const Cars = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,10 @@ const Cars = () => {
 
         dispatch(setCars(response));
       } catch (error) {
-        console.error("Error fetching cars:", error);
+        Modal.error({
+          content: "Error loadin cars",
+          centered: true,
+        });
       }
     };
 

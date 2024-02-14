@@ -1,7 +1,6 @@
 import ApiBaseService from "./ApiBaseService";
 import { ResponseAuth, User, UserAuth, userData } from "../interfaces/User";
-import axios, { AxiosResponse } from "axios";
-import { ErrorResponse } from "react-router-dom";
+import axios from "axios";
 
 class ApiUserService extends ApiBaseService {
   static async auth(
@@ -13,6 +12,9 @@ class ApiUserService extends ApiBaseService {
         "Account/Login",
         user
       );
+      localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("accessToken", response.data.accessToken);
       callback?.();
       return response.data;
     } catch (error) {
@@ -77,7 +79,7 @@ class ApiUserService extends ApiBaseService {
     }
   }
 
-  static async logout() {
+  static async logout(callback?: () => void) {
     try {
       await axios.get(`${ApiBaseService.baseUrl}/Account/Logout`, {
         withCredentials: true,
@@ -86,8 +88,22 @@ class ApiUserService extends ApiBaseService {
           userId: localStorage.getItem("userId"),
         },
       });
+
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("isAuthenticated");
+
+      callback?.();
     } catch (error) {
       console.error("Failed to logout", error);
+
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("isAuthenticated");
+
+      callback?.();
       throw error;
     }
   }

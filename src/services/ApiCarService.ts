@@ -6,6 +6,7 @@ import {
   CarUpdateDto,
   Color,
 } from "../interfaces/Car";
+import axiosInstance from "./AxiosInstance";
 
 class ApiCarService extends ApiBaseService {
   static async deleteCarById(id: number | null) {
@@ -33,23 +34,35 @@ class ApiCarService extends ApiBaseService {
     }
   }
 
+  // static async getCarsByPage(
+  //   page: number,
+  //   pageSize: number
+  // ): Promise<{ cars: Car[]; totalItems: number }> {
+  //   try {
+  //     const response = await ApiCarService.get<{
+  //       cars: Car[];
+  //       totalItems: number;
+  //     }>(`Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(
+  //       `Error fetching cars for page ${page} and pageSize ${pageSize}:`,
+  //       error
+  //     );
+  //     throw error;
+  //   }
+  // }
+
   static async getCarsByPage(
     page: number,
     pageSize: number
   ): Promise<{ cars: Car[]; totalItems: number }> {
-    try {
-      const response = await ApiCarService.get<{
-        cars: Car[];
-        totalItems: number;
-      }>(`Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`);
-      return response.data;
-    } catch (error) {
-      console.error(
-        `Error fetching cars for page ${page} and pageSize ${pageSize}:`,
-        error
-      );
-      throw error;
-    }
+    const response = await axiosInstance.get<{
+      cars: Car[];
+      totalItems: number;
+    }>(`Car/GetCarsByPage?page=${page}&pageSize=${pageSize}`);
+
+    return response.data;
   }
 
   static async updateCar(updateCar: CarUpdateDto, callback?: () => void) {

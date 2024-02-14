@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { User, UserAuth } from "../../interfaces/User";
+import { UserAuth } from "../../interfaces/User";
 import ApiServices from "../../services/ApiUserService";
 import styles from "./Auth.module.css";
 import { userAuthShema } from "../../validations/UserValidation";
 import Button from "../../UiKit/Button/Button";
 import { FC } from "react";
+import { Modal } from "antd";
 
 interface AuthFormProps {
-  setIsAuth: (userId: string, userRole: string, accessToken: string) => void;
+  setIsAuth: (userId: string, userRole: string) => void;
 }
 
 const AuthForm: FC<AuthFormProps> = ({ setIsAuth }) => {
@@ -29,15 +30,19 @@ const AuthForm: FC<AuthFormProps> = ({ setIsAuth }) => {
       password: data.userPassword,
     };
     try {
-      const response = await ApiServices.auth(user, () => navigate("/cars"));
+      const response = await ApiServices.auth(user);
 
       if (response == undefined) {
         throw new Error();
       }
 
-      setIsAuth(response.userId, response.role, response.accessToken);
+      setIsAuth(response.userId, response.role);
+      navigate("/cars");
     } catch (error) {
-      console.error("Auth error", error);
+      Modal.error({
+        content: "Error during authorization try again later",
+        centered: true,
+      });
       reset();
     }
   };

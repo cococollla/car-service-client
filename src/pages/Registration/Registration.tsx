@@ -6,6 +6,7 @@ import ApiServices from "../../services/ApiUserService";
 import { useNavigate } from "react-router-dom";
 import { userRegistrationSheme } from "../../validations/UserValidation";
 import Button from "../../UiKit/Button/Button";
+import { Modal } from "antd";
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -28,7 +29,10 @@ const RegistrationForm = () => {
       ApiServices.registration(newUser, () => navigate("/auth"));
       reset();
     } catch (error) {
-      console.error("Registration error", error);
+      Modal.error({
+        content: "Error during registrationtry again later",
+        centered: true,
+      });
     }
   };
 
