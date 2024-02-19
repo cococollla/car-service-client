@@ -1,9 +1,12 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ApiUserService from "./ApiUserService";
 
 const baseUrl = "https://localhost:7227/api";
 const accessToken = localStorage.getItem("accessToken");
 
 const axiosInstance = axios.create({
+  withCredentials: true,
   baseURL: baseUrl,
   headers: {
     "Content-Type": "application/json",
@@ -18,13 +21,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-
+    if (error.response.status === 401) {
       try {
         const response = await axios.get<string>(
           `${baseUrl}/Account/RefreshToken`,
@@ -42,8 +39,9 @@ axiosInstance.interceptors.response.use(
 
         originalRequest.headers.Authorization = `Bearer ${refreshedToken}`;
 
-        return axios(originalRequest);
+        return await axios(originalRequest);
       } catch (refreshError) {
+        console.error("Axiosinstance");
         return Promise.reject(refreshError);
       }
     }

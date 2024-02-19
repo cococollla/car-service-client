@@ -20,7 +20,7 @@ const Cars = () => {
         dispatch(setCars(response));
       } catch (error) {
         Modal.error({
-          content: "Error loadin cars",
+          content: "Error loading cars",
           centered: true,
         });
       }
