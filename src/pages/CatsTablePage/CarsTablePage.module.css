@@ -1,0 +1,7 @@
+.table_page {
+  font-family: var(--main--font);
+  font-size: 20px;
+  background-color: var(--background-modal-color);
+  box-shadow: inset 0px 0px 12px 2px #c1c1c191;
+  height: 100vh;
+}
